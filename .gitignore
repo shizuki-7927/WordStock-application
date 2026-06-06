@@ -1,0 +1,13 @@
+# Pythonのキャッシュ
+__pycache__/
+*.py[cod]
+
+# 仮想環境
+.venv/
+
+# データベース（重要！）
+db.sqlite3
+
+# OSが自動生成するファイル
+.DS_Store
+Thumbs.db
