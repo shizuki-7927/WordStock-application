@@ -1,0 +1,32 @@
+{% extends "words/base.html" %}
+
+{% block title %}{{ word.word }} | WordStock{% endblock %}
+
+{% block content %}
+<article class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+  <div class="flex flex-col gap-4 border-b border-slate-200 pb-5 sm:flex-row sm:items-start sm:justify-between">
+    <div>
+      <p class="text-sm text-slate-500">登録日時: {{ word.created_at|date:"Y/m/d H:i" }}</p>
+      <h1 class="mt-2 text-3xl font-bold text-slate-950">{{ word.word }}</h1>
+    </div>
+    <div class="flex gap-2">
+      <a href="{% url 'words:update' word.pk %}" class="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-50">編集</a>
+      <a href="{% url 'words:delete' word.pk %}" class="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">削除</a>
+    </div>
+  </div>
+
+  <section class="mt-6">
+    <h2 class="text-sm font-semibold text-slate-500">意味・定義</h2>
+    <p class="mt-2 whitespace-pre-line leading-7">{{ word.meaning }}</p>
+  </section>
+
+  <section class="mt-6">
+    <h2 class="text-sm font-semibold text-slate-500">具体例・例文</h2>
+    <p class="mt-2 whitespace-pre-line leading-7">{{ word.example|default:"未入力" }}</p>
+  </section>
+</article>
+
+<div class="mt-6">
+  <a href="{% url 'words:list' %}" class="text-sm font-semibold text-blue-700 hover:text-blue-900">一覧へ戻る</a>
+</div>
+{% endblock %}
