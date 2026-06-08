@@ -14,8 +14,12 @@ class WordListView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         query = self.request.GET.get("q", "").strip()
+
         if query:
-            queryset = queryset.filter(Q(word__icontains=query) | Q(meaning__icontains=query))
+            queryset = queryset.filter(
+                Q(word__icontains=query) | Q(meaning__icontains=query)
+            )
+
         return queryset
 
     def get_context_data(self, **kwargs):
