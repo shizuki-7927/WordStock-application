@@ -68,3 +68,6 @@ powershellではなく、cmdで起動する場合、.venv\Scripts\activateと入
 ```
 python manage.py runserver
 ```
+
+その後、以下のURLにアクセス
+http://127.0.0.1:8000/
