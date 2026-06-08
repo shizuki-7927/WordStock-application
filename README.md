@@ -24,6 +24,7 @@
 - example: テキスト（具体例や例文）
 - created_at: 日時（登録日時、自動生成）
 
+---
 
 ## 初期作成コマンド
 
@@ -60,3 +61,10 @@ powershellではなく、cmdで起動する場合、.venv\Scripts\activateと入
 
 - アプリ: http://127.0.0.1:8000/
 - 管理画面: http://127.0.0.1:8000/admin/
+
+
+## サーバーの起動方法
+
+```
+python manage.py runserver
+```
