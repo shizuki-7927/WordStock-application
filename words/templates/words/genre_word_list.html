@@ -1,0 +1,51 @@
+{% extends "words/base.html" %}
+
+{% block title %}{{ genre.name }} | WordStock{% endblock %}
+
+{% block content %}
+<div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+  <div>
+    <p class="text-sm text-slate-500">ジャンル</p>
+    <h1 class="text-2xl font-bold">{{ genre.name }}</h1>
+  </div>
+
+  <form method="get" class="flex w-full gap-2 sm:max-w-md">
+    <input type="search" name="q" value="{{ query }}" placeholder="単語・意味で検索"
+      class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+    <button type="submit" class="rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700">
+      検索
+    </button>
+  </form>
+</div>
+
+{% if words %}
+  <div class="grid gap-4">
+    {% for item in words %}
+      <article class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-slate-950">{{ item.word }}</h2>
+            <p class="mt-2 line-clamp-2 text-sm leading-6 text-slate-700">{{ item.meaning }}</p>
+          </div>
+          <a href="{% url 'words:detail' item.pk %}" class="shrink-0 rounded-md border border-blue-600 px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50">
+            詳細を見る
+          </a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center">
+    <p class="text-slate-700">このジャンルにはまだ単語がありません。</p>
+    <a href="{% url 'words:create' %}" class="mt-4 inline-block rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+      単語を登録する
+    </a>
+  </div>
+{% endif %}
+
+<div class="mt-6">
+  <a href="{% url 'words:genre_list' %}" class="text-sm font-semibold text-blue-700 hover:text-blue-900">
+    ジャンル一覧へ戻る
+  </a>
+</div>
+{% endblock %}
