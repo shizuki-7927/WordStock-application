@@ -7,16 +7,14 @@
   <h1 class="text-2xl font-bold">単語を削除</h1>
 
   <p class="mt-4 text-slate-700">
-    「{{ object.word }}」を本当に削除しますか？
+    「{{ word.word }}」を削除しますか？
   </p>
 
   <form method="post" class="mt-6 flex justify-end gap-3">
     {% csrf_token %}
-
-    <a href="{% url 'words:detail' object.pk %}" class="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-50">
-      キャンセル
+    <a href="{% url 'words:genre_words' word.genre.pk %}" class="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-50">
+      やめる
     </a>
-
     <button type="submit" class="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">
       削除する
     </button>
