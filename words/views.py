@@ -1,6 +1,6 @@
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from .models import Genre, Word
@@ -22,6 +22,13 @@ class GenreCreateView(CreateView):
     success_url = reverse_lazy("words:genre_list")
 
 
+class GenreDeleteView(DeleteView):
+    model = Genre
+    template_name = "words/genre_confirm_delete.html"
+    context_object_name = "genre"
+    success_url = reverse_lazy("words:genre_list")
+
+
 class GenreWordListView(ListView):
     model = Word
     template_name = "words/genre_word_list.html"
@@ -29,7 +36,7 @@ class GenreWordListView(ListView):
     paginate_by = 10
 
     def dispatch(self, request, *args, **kwargs):
-        self.genre = get_object_or_404(Genre, pk=kwargs["pk"])
+        self.genre = get_object_or_404(Genre, pk=kwargs["genre_pk"])
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -50,26 +57,25 @@ class GenreWordListView(ListView):
         return context
 
 
-class WordListView(ListView):
+class WordCreateView(CreateView):
     model = Word
-    template_name = "words/word_list.html"
-    context_object_name = "words"
-    paginate_by = 10
+    template_name = "words/word_form.html"
+    fields = ["word", "meaning", "example"]
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        query = self.request.GET.get("q", "").strip()
+    def dispatch(self, request, *args, **kwargs):
+        self.genre = get_object_or_404(Genre, pk=kwargs["genre_pk"])
+        return super().dispatch(request, *args, **kwargs)
 
-        if query:
-            queryset = queryset.filter(
-                Q(word__icontains=query) | Q(meaning__icontains=query)
-            )
+    def form_valid(self, form):
+        form.instance.genre = self.genre
+        return super().form_valid(form)
 
-        return queryset
+    def get_success_url(self):
+        return reverse("words:genre_words", kwargs={"genre_pk": self.genre.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["query"] = self.request.GET.get("q", "").strip()
+        context["genre"] = self.genre
         return context
 
 
@@ -79,19 +85,24 @@ class WordDetailView(DetailView):
     context_object_name = "word"
 
 
-class WordCreateView(CreateView):
-    model = Word
-    template_name = "words/word_form.html"
-    fields = ["genre", "word", "meaning", "example"]
-
-
 class WordUpdateView(UpdateView):
     model = Word
     template_name = "words/word_form.html"
-    fields = ["genre", "word", "meaning", "example"]
+    fields = ["word", "meaning", "example"]
+
+    def get_success_url(self):
+        return reverse("words:genre_words", kwargs={"genre_pk": self.object.genre.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["genre"] = self.object.genre
+        return context
 
 
 class WordDeleteView(DeleteView):
     model = Word
     template_name = "words/word_confirm_delete.html"
-    success_url = reverse_lazy("words:genre_list")
+    context_object_name = "word"
+
+    def get_success_url(self):
+        return reverse("words:genre_words", kwargs={"genre_pk": self.object.genre.pk})

@@ -8,6 +8,10 @@
     {% if object.pk %}単語を編集{% else %}単語を登録{% endif %}
   </h1>
 
+  <p class="mt-2 text-sm text-slate-600">
+    追加先ジャンル: <span class="font-semibold text-slate-900">{{ genre.name }}</span>
+  </p>
+
   <form method="post" class="mt-6 space-y-5">
     {% csrf_token %}
 
@@ -23,17 +27,10 @@
       </div>
     {% endfor %}
 
-    <div class="flex items-center justify-end gap-3 pt-2">
-      {% if object.pk %}
-        <a href="{% url 'words:detail' object.pk %}" class="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-50">
-          キャンセル
-        </a>
-      {% else %}
-        <a href="{% url 'words:genre_list' %}" class="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-50">
-          キャンセル
-        </a>
-      {% endif %}
-
+    <div class="flex justify-end gap-3">
+      <a href="{% url 'words:genre_words' genre.pk %}" class="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-50">
+        キャンセル
+      </a>
       <button type="submit" class="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
         保存
       </button>
@@ -43,26 +40,17 @@
 
 <style>
   input[type="text"],
-  textarea,
-  select {
+  textarea {
     width: 100%;
     border-radius: 0.375rem;
     border: 1px solid rgb(203 213 225);
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
     outline: none;
-    background-color: white;
   }
 
   textarea {
     min-height: 9rem;
-  }
-
-  input[type="text"]:focus,
-  textarea:focus,
-  select:focus {
-    border-color: rgb(59 130 246);
-    box-shadow: 0 0 0 3px rgb(219 234 254);
   }
 </style>
 {% endblock %}

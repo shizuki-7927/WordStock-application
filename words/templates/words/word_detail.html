@@ -4,27 +4,17 @@
 
 {% block content %}
 <article class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-  <div class="border-b border-slate-200 pb-5">
-    <p class="text-sm text-slate-500">
-      登録日時: {{ word.created_at|date:"Y/m/d H:i" }}
-    </p>
-    <h1 class="mt-2 text-3xl font-bold text-slate-950">
-      {{ word.word }}
-    </h1>
-  </div>
+  <p class="text-sm text-slate-500">ジャンル: {{ word.genre.name }}</p>
+  <h1 class="mt-2 text-3xl font-bold">{{ word.word }}</h1>
 
   <section class="mt-6">
     <h2 class="text-sm font-semibold text-slate-500">意味・定義</h2>
-    <p class="mt-2 whitespace-pre-line leading-7">
-      {{ word.meaning }}
-    </p>
+    <p class="mt-2 whitespace-pre-line leading-7">{{ word.meaning }}</p>
   </section>
 
   <section class="mt-6">
     <h2 class="text-sm font-semibold text-slate-500">具体例・例文</h2>
-    <p class="mt-2 whitespace-pre-line leading-7">
-      {{ word.example|default:"未入力" }}
-    </p>
+    <p class="mt-2 whitespace-pre-line leading-7">{{ word.example|default:"未入力" }}</p>
   </section>
 
   <div class="mt-8 flex flex-wrap gap-3">
@@ -34,7 +24,7 @@
     <a href="{% url 'words:delete' word.pk %}" class="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">
       削除する
     </a>
-    <a href="{% url 'words:list' %}" class="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-50">
+    <a href="{% url 'words:genre_words' word.genre.pk %}" class="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-50">
       一覧へ戻る
     </a>
   </div>

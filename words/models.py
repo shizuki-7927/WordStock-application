@@ -15,16 +15,15 @@ class Genre(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("words:genre_words", kwargs={"pk": self.pk})
+        return reverse("words:genre_words", kwargs={"genre_pk": self.pk})
 
 
 class Word(models.Model):
     genre = models.ForeignKey(
         Genre,
         verbose_name="ジャンル",
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="words",
-        null=True,
     )
     word = models.CharField("単語・言葉", max_length=100)
     meaning = models.TextField("意味・定義")
